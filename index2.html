@@ -6,7 +6,7 @@
     </style>
 
     <script src="//unpkg.com/3d-force-graph"></script>
-    <script src="SBOM.js"></script>
+    <!-- <script src="SBOM.js"></script> -->
     <!--<script src="../../dist/3d-force-graph.js"></script>-->
 </head>
 
@@ -26,25 +26,34 @@
         //         }))
         // };
 
-        const gData = {
-            nodes: sbom.dependencies.map((dep, i) => ({id: dep.ref, name: ""})),
-            links: []
-            // links: sbom.dependencies.filter(dep => dep.dependsOn).map(dep => ({source: dep.ref, target: dep.dependsOn}))
-        }
+        fetch('SBOM.json')
+            .then(res => res.json())
+            .then(out => {
+                sbom = out
+                const gData = {
+                    nodes: sbom.dependencies.map((module, i) => ({ id: module.ref, name: "" })),
+                    links: []
+                    // links: sbom.dependencies.filter(dep => dep.dependsOn).map(dep => ({source: dep.ref, target: dep.dependsOn}))
+                }
 
 
-        for (let dep of sbom.dependencies) {
-            if (!dep.dependsOn) continue
-            for (let j of dep.dependsOn) {
-                gData.links.push({source: dep.ref, target: j})
-                console.log("pushed")
+                for (let module of sbom.dependencies) {
+                    if (!module.dependsOn) continue
+                    for (let j of module.dependsOn) {
+                        gData.links.push({ source: module.ref, target: j })
+                    }
+                }
+
+                console.log(gData)
+
+                const Graph = ForceGraph3D()
+                    (document.getElementById('3d-graph'))
+                    .graphData(gData);
             }
-        }
+            )
+            .catch(err => { throw err });
 
-        console.log(gData)
 
-        const Graph = ForceGraph3D()
-            (document.getElementById('3d-graph'))
-            .graphData(gData);
+
     </script>
 </body>
