@@ -27,25 +27,24 @@
         // };
 
         const gData = {
-            nodes: sbom.dependencies.map(i => ({id: 0, name: i.ref})),
-            // links: []
-            links: sbom.dependencies.filter(i => i.dependsOn).map(i => ({source: i.ref, target: i.dependsOn}))
+            nodes: sbom.dependencies.map((dep, i) => ({id: dep.ref, name: ""})),
+            links: []
+            // links: sbom.dependencies.filter(dep => dep.dependsOn).map(dep => ({source: dep.ref, target: dep.dependsOn}))
         }
 
 
-        for (i in sbom.dependencies) {
-
-            for (j in i.dependsOn) {
-                gData.links.push({source: i.ref, target: j})
+        for (let dep of sbom.dependencies) {
+            if (!dep.dependsOn) continue
+            for (let j of dep.dependsOn) {
+                gData.links.push({source: dep.ref, target: j})
                 console.log("pushed")
             }
-
         }
 
         console.log(gData)
 
-        // const Graph = ForceGraph3D()
-        //     (document.getElementById('3d-graph'))
-        //     .graphData(gData);
+        const Graph = ForceGraph3D()
+            (document.getElementById('3d-graph'))
+            .graphData(gData);
     </script>
 </body>
