@@ -4,7 +4,7 @@
             margin: 0;
         }
     </style>
-
+    <script src="//unpkg.com/three"></script>
     <script src="//unpkg.com/3d-force-graph"></script>
     <!-- <script src="SBOM.js"></script> -->
     <!--<script src="../../dist/3d-force-graph.js"></script>-->
@@ -48,7 +48,18 @@
 
                 const Graph = ForceGraph3D()
                     (document.getElementById('3d-graph'))
-                    .graphData(gData);
+                    .dagMode('rl')
+                    .dagLevelDistance(50)
+                    .graphData(gData)
+                    .nodeThreeObject(({ img }) => {
+                        const imgTexture = new THREE.TextureLoader().load(`./_circle.png`);
+                        const material = new THREE.SpriteMaterial({ map: imgTexture, alphaMap: imgTexture });
+                        const sprite = new THREE.Sprite(material);
+                        sprite.scale.set(12, 12);
+                        return sprite;
+                    })
+                    .nodeLabel(node => node.id)
+                    .linkOpacity(0.8);
             }
             )
             .catch(err => { throw err });
