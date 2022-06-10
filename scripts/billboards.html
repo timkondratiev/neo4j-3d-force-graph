@@ -14,18 +14,10 @@
     <div id="3d-graph"></div>
 
     <script>
-        // Random tree
-        const N = 300;
-        // const gData = {
-        //     nodes: [...Array(N).keys()].map(i => ({ id: i })),
-        //     links: [...Array(N).keys()]
-        //         .filter(id => id)
-        //         .map(id => ({
-        //             source: id,
-        //             target: Math.round(Math.random() * (id - 1))
-        //         }))
-        // };
+        // Stats / GUI
+        (function () { var script = document.createElement('script'); script.onload = function () { var stats = new Stats(); document.body.appendChild(stats.dom); requestAnimationFrame(function loop() { stats.update(); requestAnimationFrame(loop) }); }; script.src = '//mrdoob.github.io/stats.js/build/stats.min.js'; document.head.appendChild(script); })()
 
+        // Grgaph generation and visualization
         fetch('SBOM.json')
             .then(res => res.json())
             .then(out => {
@@ -51,13 +43,13 @@
                     .dagMode('rl')
                     .dagLevelDistance(50)
                     .graphData(gData)
-                    .nodeThreeObject(({ img }) => {
-                        const imgTexture = new THREE.TextureLoader().load(`./_circle.png`);
-                        const material = new THREE.SpriteMaterial({ map: imgTexture, alphaMap: imgTexture });
-                        const sprite = new THREE.Sprite(material);
-                        sprite.scale.set(12, 12);
-                        return sprite;
-                    })
+                    // .nodeThreeObject(({ img }) => {
+                    //     const imgTexture = new THREE.TextureLoader().load(`./_circle.png`);
+                    //     const material = new THREE.SpriteMaterial({ map: imgTexture, alphaMap: imgTexture });
+                    //     const sprite = new THREE.Sprite(material);
+                    //     sprite.scale.set(12, 12);
+                    //     return sprite;
+                    // })
                     .nodeLabel(node => node.id)
                     .linkOpacity(0.8);
             }
