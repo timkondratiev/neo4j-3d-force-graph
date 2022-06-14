@@ -43,11 +43,14 @@
                     .dagLevelDistance(50)
                     .graphData(gData)
                     .nodeThreeObject(({ img }) => {
-                        const imgTexture = new THREE.TextureLoader().load(`./_circle.png`);
-                        const material = new THREE.SpriteMaterial({ map: imgTexture, alphaMap: imgTexture });
-                        const sprite = new THREE.Sprite(material);
-                        sprite.scale.set(12, 12);
-                        return sprite;
+
+                        const material = new THREE.MeshBasicMaterial({ color: 0xffffff })
+                        // const sphereGeo = new THREE.SphereBufferGeometry( 4, 9, 4 )
+                        const sphereGeo = new THREE.IcosahedronBufferGeometry(4, 0)
+                        const mesh = new THREE.Mesh(sphereGeo, material)
+                        return mesh
+
+
                     })
                     .nodeLabel(node => node.id)
                     .linkOpacity(0.8);

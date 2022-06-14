@@ -34,12 +34,12 @@
             .nodeThreeObject(({ img }) => {
                 
                 const material = new THREE.MeshBasicMaterial({color: 0xffffff})
-                const sphereGeo = new THREE.SphereBufferGeometry( 4, 9, 4 )
+                // const sphereGeo = new THREE.SphereBufferGeometry( 4, 9, 4 )
+                const sphereGeo = new THREE.IcosahedronBufferGeometry( 4, 1 )
                 const mesh = new THREE.Mesh(sphereGeo, material)
                 return mesh
 
 
-            })
-            ;
+            });
     </script>
 </body>
